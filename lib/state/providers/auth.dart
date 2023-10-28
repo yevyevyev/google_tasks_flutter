@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:googleapis/tasks/v1.dart';
+import 'package:googleapis/tasks/v1.dart' as g;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +8,7 @@ part 'auth.g.dart';
 
 @riverpod
 class Auth extends _$Auth {
-  final _googleSignIn = GoogleSignIn(scopes: [TasksApi.tasksScope]);
+  final _googleSignIn = GoogleSignIn(scopes: [g.TasksApi.tasksScope]);
 
   @override
   FutureOr<GoogleSignInAccount?> build() {

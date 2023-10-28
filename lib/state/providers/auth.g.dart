@@ -20,7 +20,7 @@ final httpClientProvider = AutoDisposeFutureProvider<http.Client>.internal(
 );
 
 typedef HttpClientRef = AutoDisposeFutureProviderRef<http.Client>;
-String _$authHash() => r'1149ea97ccebbf872ca034dadd259d956cdbdec9';
+String _$authHash() => r'e8a8df47bfcca68868806ca0a1b84bd76d533236';
 
 /// See also [Auth].
 @ProviderFor(Auth)

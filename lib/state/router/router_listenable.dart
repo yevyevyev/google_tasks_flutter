@@ -1,4 +1,5 @@
-import 'package:better_gtask/state/state.dart';
+import 'package:better_gtask/state/providers/auth.dart';
+import 'package:better_gtask/state/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,11 +28,11 @@ class RouterListenable extends _$RouterListenable implements Listenable {
     final isSplash = location == SplashRoute.path;
 
     if (isSplash) {
-      return _isAuth ? HomeRoute.path : AuthRoute.path;
+      return _isAuth ? TaskListRoute.path : AuthRoute.path;
     }
 
     final isLoggingIn = location == AuthRoute.path;
-    if (isLoggingIn) return _isAuth ? HomeRoute.path : null;
+    if (isLoggingIn) return _isAuth ? TaskListRoute.path : null;
 
     return _isAuth ? null : SplashRoute.path;
   }

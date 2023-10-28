@@ -16,12 +16,16 @@ dependencies:
   flutter_riverpod: ^2.4.4
   riverpod_annotation: ^2.2.1
   google_sign_in: ^6.1.5
-  http: ^1.1.0
   extension_google_sign_in_as_googleapis_auth: ^2.0.11
   freezed_annotation: ^2.4.1
   very_good_infinite_list: ^0.7.1
   firebase_core: ^2.20.0
   sign_button: ^2.0.6
+  uuid: ^4.1.0
+  isar: ^4.0.0-dev.14
+  isar_flutter_libs: ^4.0.0-dev.14
+  path_provider: ^2.1.1
+  connectivity_plus: ^5.0.1
 
 dev_dependencies:
   flutter_test:

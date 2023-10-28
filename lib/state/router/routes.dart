@@ -4,16 +4,14 @@ import 'package:go_router/go_router.dart';
 
 part 'routes.g.dart';
 
-@TypedGoRoute<HomeRoute>(
-  path: HomeRoute.path,
-)
-class HomeRoute extends GoRouteData {
-  const HomeRoute();
+@TypedGoRoute<TaskListRoute>(path: TaskListRoute.path, routes: [TypedGoRoute<TasksRoute>(path: TasksRoute.path)])
+class TaskListRoute extends GoRouteData {
+  const TaskListRoute();
 
   static const path = '/';
 
   @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) => const NoTransitionPage(child: HomeScreen());
+  Page<void> buildPage(BuildContext context, GoRouterState state) => const NoTransitionPage(child: TaskListScreen());
 }
 
 @TypedGoRoute<AuthRoute>(
@@ -38,4 +36,17 @@ class SplashRoute extends GoRouteData {
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) => const NoTransitionPage(child: SplashScreen());
+}
+
+class TasksRoute extends GoRouteData {
+  const TasksRoute({required this.taskListId});
+
+  static const path = ':taskListId/tasks';
+
+  final String taskListId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => TasksScreen(
+        taskListId: taskListId,
+      );
 }

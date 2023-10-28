@@ -1,16 +1,20 @@
 # better_gtask
 
-A new Flutter project.
+Google Tasks on Flutter
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Libraries used
+- riverpod - reactive state management
+- freezed - immutable models
+- isar - local storage
+- googleapis - access to gtask api
+- connectivity - observing internet status
+- go_router - routing
+- very_good_infinite_list - infinite scrolling
+  
+# Features
+- Optimistic data updates
+  - First fetch fetched in parallel from local storage and remote storage
+  - Adding new data adds it immediately into local storage with pending status and submits to remote storage. If fails, marks it to draft.
+  - Observing internet connectivity status and reacting to it
+- Pull to refresh
+- Undo

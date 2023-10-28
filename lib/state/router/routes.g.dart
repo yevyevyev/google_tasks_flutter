@@ -7,21 +7,46 @@ part of 'routes.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-      $homeRoute,
+      $taskListRoute,
       $authRoute,
       $splashRoute,
     ];
 
-RouteBase get $homeRoute => GoRouteData.$route(
+RouteBase get $taskListRoute => GoRouteData.$route(
       path: '/',
-      factory: $HomeRouteExtension._fromState,
+      factory: $TaskListRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: ':taskListId/tasks',
+          factory: $TasksRouteExtension._fromState,
+        ),
+      ],
     );
 
-extension $HomeRouteExtension on HomeRoute {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+extension $TaskListRouteExtension on TaskListRoute {
+  static TaskListRoute _fromState(GoRouterState state) => const TaskListRoute();
 
   String get location => GoRouteData.$location(
         '/',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $TasksRouteExtension on TasksRoute {
+  static TasksRoute _fromState(GoRouterState state) => TasksRoute(
+        taskListId: state.pathParameters['taskListId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/${Uri.encodeComponent(taskListId)}/tasks',
       );
 
   void go(BuildContext context) => context.go(location);

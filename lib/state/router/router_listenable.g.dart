@@ -6,7 +6,7 @@ part of 'router_listenable.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerListenableHash() => r'2d7df1f83f445279e5b22f4eef2db7682312196b';
+String _$routerListenableHash() => r'4826334464a57f26c72b579de3f58eb2c85e48d8';
 
 /// See also [RouterListenable].
 @ProviderFor(RouterListenable)
