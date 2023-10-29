@@ -16,6 +16,7 @@ class TaskListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task Lists'),
+        bottom: const ConnectivityStatus(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => onFabPressed(ref),

@@ -30,6 +30,11 @@ const TaskListSchema = IsarGeneratedSchema(
         enumMap: {"draft": 0, "pending": 1, "done": 2},
       ),
       IsarPropertySchema(
+        name: 'action',
+        type: IsarType.byte,
+        enumMap: {"delete": 0, "insert": 1, "update": 2, "none": 3},
+      ),
+      IsarPropertySchema(
         name: 'title',
         type: IsarType.string,
       ),
@@ -52,8 +57,9 @@ const TaskListSchema = IsarGeneratedSchema(
 int serializeTaskList(IsarWriter writer, TaskList object) {
   IsarCore.writeString(writer, 1, object.id);
   IsarCore.writeByte(writer, 2, object.status.index);
-  IsarCore.writeString(writer, 3, object.title);
-  IsarCore.writeLong(writer, 4, object.updated.toUtc().microsecondsSinceEpoch);
+  IsarCore.writeByte(writer, 3, object.action.index);
+  IsarCore.writeString(writer, 4, object.title);
+  IsarCore.writeLong(writer, 5, object.updated.toUtc().microsecondsSinceEpoch);
   return Isar.fastHash(object.id);
 }
 
@@ -70,11 +76,20 @@ TaskList deserializeTaskList(IsarReader reader) {
           _taskListStatus[IsarCore.readByte(reader, 2)] ?? RemoteStatus.draft;
     }
   }
+  final RemoteAction _action;
+  {
+    if (IsarCore.readNull(reader, 3)) {
+      _action = RemoteAction.delete;
+    } else {
+      _action =
+          _taskListAction[IsarCore.readByte(reader, 3)] ?? RemoteAction.delete;
+    }
+  }
   final String _title;
-  _title = IsarCore.readString(reader, 3) ?? '';
+  _title = IsarCore.readString(reader, 4) ?? '';
   final DateTime _updated;
   {
-    final value = IsarCore.readLong(reader, 4);
+    final value = IsarCore.readLong(reader, 5);
     if (value == -9223372036854775808) {
       _updated = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
     } else {
@@ -85,6 +100,7 @@ TaskList deserializeTaskList(IsarReader reader) {
   final object = TaskList(
     id: _id,
     status: _status,
+    action: _action,
     title: _title,
     updated: _updated,
   );
@@ -106,10 +122,19 @@ dynamic deserializeTaskListProp(IsarReader reader, int property) {
         }
       }
     case 3:
-      return IsarCore.readString(reader, 3) ?? '';
-    case 4:
       {
-        final value = IsarCore.readLong(reader, 4);
+        if (IsarCore.readNull(reader, 3)) {
+          return RemoteAction.delete;
+        } else {
+          return _taskListAction[IsarCore.readByte(reader, 3)] ??
+              RemoteAction.delete;
+        }
+      }
+    case 4:
+      return IsarCore.readString(reader, 4) ?? '';
+    case 5:
+      {
+        final value = IsarCore.readLong(reader, 5);
         if (value == -9223372036854775808) {
           return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true).toLocal();
         } else {
@@ -126,6 +151,7 @@ sealed class _TaskListUpdate {
   bool call({
     required String id,
     RemoteStatus? status,
+    RemoteAction? action,
     String? title,
     DateTime? updated,
   });
@@ -140,6 +166,7 @@ class _TaskListUpdateImpl implements _TaskListUpdate {
   bool call({
     required String id,
     Object? status = ignore,
+    Object? action = ignore,
     Object? title = ignore,
     Object? updated = ignore,
   }) {
@@ -147,8 +174,9 @@ class _TaskListUpdateImpl implements _TaskListUpdate {
           id
         ], {
           if (status != ignore) 2: status as RemoteStatus?,
-          if (title != ignore) 3: title as String?,
-          if (updated != ignore) 4: updated as DateTime?,
+          if (action != ignore) 3: action as RemoteAction?,
+          if (title != ignore) 4: title as String?,
+          if (updated != ignore) 5: updated as DateTime?,
         }) >
         0;
   }
@@ -158,6 +186,7 @@ sealed class _TaskListUpdateAll {
   int call({
     required List<String> id,
     RemoteStatus? status,
+    RemoteAction? action,
     String? title,
     DateTime? updated,
   });
@@ -172,13 +201,15 @@ class _TaskListUpdateAllImpl implements _TaskListUpdateAll {
   int call({
     required List<String> id,
     Object? status = ignore,
+    Object? action = ignore,
     Object? title = ignore,
     Object? updated = ignore,
   }) {
     return collection.updateProperties(id, {
       if (status != ignore) 2: status as RemoteStatus?,
-      if (title != ignore) 3: title as String?,
-      if (updated != ignore) 4: updated as DateTime?,
+      if (action != ignore) 3: action as RemoteAction?,
+      if (title != ignore) 4: title as String?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -192,6 +223,7 @@ extension TaskListUpdate on IsarCollection<String, TaskList> {
 sealed class _TaskListQueryUpdate {
   int call({
     RemoteStatus? status,
+    RemoteAction? action,
     String? title,
     DateTime? updated,
   });
@@ -206,13 +238,15 @@ class _TaskListQueryUpdateImpl implements _TaskListQueryUpdate {
   @override
   int call({
     Object? status = ignore,
+    Object? action = ignore,
     Object? title = ignore,
     Object? updated = ignore,
   }) {
     return query.updateProperties(limit: limit, {
       if (status != ignore) 2: status as RemoteStatus?,
-      if (title != ignore) 3: title as String?,
-      if (updated != ignore) 4: updated as DateTime?,
+      if (action != ignore) 3: action as RemoteAction?,
+      if (title != ignore) 4: title as String?,
+      if (updated != ignore) 5: updated as DateTime?,
     });
   }
 }
@@ -233,6 +267,7 @@ class _TaskListQueryBuilderUpdateImpl implements _TaskListQueryUpdate {
   @override
   int call({
     Object? status = ignore,
+    Object? action = ignore,
     Object? title = ignore,
     Object? updated = ignore,
   }) {
@@ -240,8 +275,9 @@ class _TaskListQueryBuilderUpdateImpl implements _TaskListQueryUpdate {
     try {
       return q.updateProperties(limit: limit, {
         if (status != ignore) 2: status as RemoteStatus?,
-        if (title != ignore) 3: title as String?,
-        if (updated != ignore) 4: updated as DateTime?,
+        if (action != ignore) 3: action as RemoteAction?,
+        if (title != ignore) 4: title as String?,
+        if (updated != ignore) 5: updated as DateTime?,
       });
     } finally {
       q.close();
@@ -261,6 +297,12 @@ const _taskListStatus = {
   0: RemoteStatus.draft,
   1: RemoteStatus.pending,
   2: RemoteStatus.done,
+};
+const _taskListAction = {
+  0: RemoteAction.delete,
+  1: RemoteAction.insert,
+  2: RemoteAction.update,
+  3: RemoteAction.none,
 };
 
 extension TaskListQueryFilter
@@ -520,6 +562,88 @@ extension TaskListQueryFilter
     });
   }
 
+  QueryBuilder<TaskList, TaskList, QAfterFilterCondition> actionEqualTo(
+    RemoteAction value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 3,
+          value: value.index,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<TaskList, TaskList, QAfterFilterCondition> actionGreaterThan(
+    RemoteAction value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterCondition(
+          property: 3,
+          value: value.index,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<TaskList, TaskList, QAfterFilterCondition>
+      actionGreaterThanOrEqualTo(
+    RemoteAction value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        GreaterOrEqualCondition(
+          property: 3,
+          value: value.index,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<TaskList, TaskList, QAfterFilterCondition> actionLessThan(
+    RemoteAction value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessCondition(
+          property: 3,
+          value: value.index,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<TaskList, TaskList, QAfterFilterCondition>
+      actionLessThanOrEqualTo(
+    RemoteAction value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        LessOrEqualCondition(
+          property: 3,
+          value: value.index,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<TaskList, TaskList, QAfterFilterCondition> actionBetween(
+    RemoteAction lower,
+    RemoteAction upper,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        BetweenCondition(
+          property: 3,
+          lower: lower.index,
+          upper: upper.index,
+        ),
+      );
+    });
+  }
+
   QueryBuilder<TaskList, TaskList, QAfterFilterCondition> titleEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -527,7 +651,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -542,7 +666,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -558,7 +682,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -573,7 +697,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -589,7 +713,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -605,7 +729,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 3,
+          property: 4,
           lower: lower,
           upper: upper,
           caseSensitive: caseSensitive,
@@ -621,7 +745,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         StartsWithCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -636,7 +760,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EndsWithCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -650,7 +774,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         ContainsCondition(
-          property: 3,
+          property: 4,
           value: value,
           caseSensitive: caseSensitive,
         ),
@@ -664,7 +788,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         MatchesCondition(
-          property: 3,
+          property: 4,
           wildcard: pattern,
           caseSensitive: caseSensitive,
         ),
@@ -676,7 +800,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const EqualCondition(
-          property: 3,
+          property: 4,
           value: '',
         ),
       );
@@ -687,7 +811,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const GreaterCondition(
-          property: 3,
+          property: 4,
           value: '',
         ),
       );
@@ -700,7 +824,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 4,
+          property: 5,
           value: value,
         ),
       );
@@ -713,7 +837,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 4,
+          property: 5,
           value: value,
         ),
       );
@@ -727,7 +851,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 4,
+          property: 5,
           value: value,
         ),
       );
@@ -740,7 +864,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 4,
+          property: 5,
           value: value,
         ),
       );
@@ -754,7 +878,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 4,
+          property: 5,
           value: value,
         ),
       );
@@ -768,7 +892,7 @@ extension TaskListQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 4,
+          property: 5,
           lower: lower,
           upper: upper,
         ),
@@ -814,11 +938,23 @@ extension TaskListQuerySortBy on QueryBuilder<TaskList, TaskList, QSortBy> {
     });
   }
 
+  QueryBuilder<TaskList, TaskList, QAfterSortBy> sortByAction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3);
+    });
+  }
+
+  QueryBuilder<TaskList, TaskList, QAfterSortBy> sortByActionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3, sort: Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskList, TaskList, QAfterSortBy> sortByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        3,
+        4,
         caseSensitive: caseSensitive,
       );
     });
@@ -828,7 +964,7 @@ extension TaskListQuerySortBy on QueryBuilder<TaskList, TaskList, QSortBy> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(
-        3,
+        4,
         sort: Sort.desc,
         caseSensitive: caseSensitive,
       );
@@ -837,13 +973,13 @@ extension TaskListQuerySortBy on QueryBuilder<TaskList, TaskList, QSortBy> {
 
   QueryBuilder<TaskList, TaskList, QAfterSortBy> sortByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4);
+      return query.addSortBy(5);
     });
   }
 
   QueryBuilder<TaskList, TaskList, QAfterSortBy> sortByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4, sort: Sort.desc);
+      return query.addSortBy(5, sort: Sort.desc);
     });
   }
 }
@@ -876,29 +1012,41 @@ extension TaskListQuerySortThenBy
     });
   }
 
+  QueryBuilder<TaskList, TaskList, QAfterSortBy> thenByAction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3);
+    });
+  }
+
+  QueryBuilder<TaskList, TaskList, QAfterSortBy> thenByActionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(3, sort: Sort.desc);
+    });
+  }
+
   QueryBuilder<TaskList, TaskList, QAfterSortBy> thenByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(3, caseSensitive: caseSensitive);
+      return query.addSortBy(4, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<TaskList, TaskList, QAfterSortBy> thenByTitleDesc(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(3, sort: Sort.desc, caseSensitive: caseSensitive);
+      return query.addSortBy(4, sort: Sort.desc, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<TaskList, TaskList, QAfterSortBy> thenByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4);
+      return query.addSortBy(5);
     });
   }
 
   QueryBuilder<TaskList, TaskList, QAfterSortBy> thenByUpdatedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(4, sort: Sort.desc);
+      return query.addSortBy(5, sort: Sort.desc);
     });
   }
 }
@@ -911,16 +1059,22 @@ extension TaskListQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TaskList, TaskList, QAfterDistinct> distinctByAction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(3);
+    });
+  }
+
   QueryBuilder<TaskList, TaskList, QAfterDistinct> distinctByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(3, caseSensitive: caseSensitive);
+      return query.addDistinctBy(4, caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<TaskList, TaskList, QAfterDistinct> distinctByUpdated() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(4);
+      return query.addDistinctBy(5);
     });
   }
 }
@@ -939,15 +1093,21 @@ extension TaskListQueryProperty1
     });
   }
 
-  QueryBuilder<TaskList, String, QAfterProperty> titleProperty() {
+  QueryBuilder<TaskList, RemoteAction, QAfterProperty> actionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<TaskList, DateTime, QAfterProperty> updatedProperty() {
+  QueryBuilder<TaskList, String, QAfterProperty> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<TaskList, DateTime, QAfterProperty> updatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 }
@@ -966,15 +1126,21 @@ extension TaskListQueryProperty2<R>
     });
   }
 
-  QueryBuilder<TaskList, (R, String), QAfterProperty> titleProperty() {
+  QueryBuilder<TaskList, (R, RemoteAction), QAfterProperty> actionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<TaskList, (R, DateTime), QAfterProperty> updatedProperty() {
+  QueryBuilder<TaskList, (R, String), QAfterProperty> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<TaskList, (R, DateTime), QAfterProperty> updatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 }
@@ -993,15 +1159,21 @@ extension TaskListQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<TaskList, (R1, R2, String), QOperations> titleProperty() {
+  QueryBuilder<TaskList, (R1, R2, RemoteAction), QOperations> actionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(3);
     });
   }
 
-  QueryBuilder<TaskList, (R1, R2, DateTime), QOperations> updatedProperty() {
+  QueryBuilder<TaskList, (R1, R2, String), QOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(4);
+    });
+  }
+
+  QueryBuilder<TaskList, (R1, R2, DateTime), QOperations> updatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(5);
     });
   }
 }

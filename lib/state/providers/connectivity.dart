@@ -5,3 +5,7 @@ part 'connectivity.g.dart';
 
 @riverpod
 Stream<ConnectivityResult> connectivity(ConnectivityRef ref) => Connectivity().onConnectivityChanged;
+
+extension ConnectivityResultX on ConnectivityResult {
+  bool get hasConnection => this != ConnectivityResult.none;
+}

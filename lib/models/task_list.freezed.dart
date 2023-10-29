@@ -19,6 +19,7 @@ mixin _$TaskList {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   RemoteStatus get status => throw _privateConstructorUsedError;
+  RemoteAction get action => throw _privateConstructorUsedError;
   DateTime get updated => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +32,12 @@ abstract class $TaskListCopyWith<$Res> {
   factory $TaskListCopyWith(TaskList value, $Res Function(TaskList) then) =
       _$TaskListCopyWithImpl<$Res, TaskList>;
   @useResult
-  $Res call({String id, String title, RemoteStatus status, DateTime updated});
+  $Res call(
+      {String id,
+      String title,
+      RemoteStatus status,
+      RemoteAction action,
+      DateTime updated});
 }
 
 /// @nodoc
@@ -50,6 +56,7 @@ class _$TaskListCopyWithImpl<$Res, $Val extends TaskList>
     Object? id = null,
     Object? title = null,
     Object? status = null,
+    Object? action = null,
     Object? updated = null,
   }) {
     return _then(_value.copyWith(
@@ -65,6 +72,10 @@ class _$TaskListCopyWithImpl<$Res, $Val extends TaskList>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as RemoteStatus,
+      action: null == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as RemoteAction,
       updated: null == updated
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
@@ -81,7 +92,12 @@ abstract class _$$TaskListImplCopyWith<$Res>
       __$$TaskListImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, RemoteStatus status, DateTime updated});
+  $Res call(
+      {String id,
+      String title,
+      RemoteStatus status,
+      RemoteAction action,
+      DateTime updated});
 }
 
 /// @nodoc
@@ -98,6 +114,7 @@ class __$$TaskListImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? status = null,
+    Object? action = null,
     Object? updated = null,
   }) {
     return _then(_$TaskListImpl(
@@ -113,6 +130,10 @@ class __$$TaskListImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as RemoteStatus,
+      action: null == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as RemoteAction,
       updated: null == updated
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
@@ -127,7 +148,8 @@ class _$TaskListImpl extends _TaskList {
   _$TaskListImpl(
       {required this.id,
       required this.title,
-      required this.status,
+      this.status = RemoteStatus.draft,
+      this.action = RemoteAction.none,
       required this.updated})
       : super._();
 
@@ -136,13 +158,17 @@ class _$TaskListImpl extends _TaskList {
   @override
   final String title;
   @override
+  @JsonKey()
   final RemoteStatus status;
+  @override
+  @JsonKey()
+  final RemoteAction action;
   @override
   final DateTime updated;
 
   @override
   String toString() {
-    return 'TaskList(id: $id, title: $title, status: $status, updated: $updated)';
+    return 'TaskList(id: $id, title: $title, status: $status, action: $action, updated: $updated)';
   }
 
   @override
@@ -153,11 +179,13 @@ class _$TaskListImpl extends _TaskList {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.action, action) || other.action == action) &&
             (identical(other.updated, updated) || other.updated == updated));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, status, updated);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, status, action, updated);
 
   @JsonKey(ignore: true)
   @override
@@ -170,7 +198,8 @@ abstract class _TaskList extends TaskList {
   factory _TaskList(
       {required final String id,
       required final String title,
-      required final RemoteStatus status,
+      final RemoteStatus status,
+      final RemoteAction action,
       required final DateTime updated}) = _$TaskListImpl;
   _TaskList._() : super._();
 
@@ -180,6 +209,8 @@ abstract class _TaskList extends TaskList {
   String get title;
   @override
   RemoteStatus get status;
+  @override
+  RemoteAction get action;
   @override
   DateTime get updated;
   @override
