@@ -6,8 +6,8 @@ abstract class TaskListsRemoteRepository implements TaskListsRepository {
   Future<Paginated<TaskList, String>> fetchTaskLists([String? offset]);
 }
 
-class GoogleApiRemoteRepository implements TaskListsRemoteRepository {
-  GoogleApiRemoteRepository(this.api);
+class GoogleApiTaskListRemoteRepository implements TaskListsRemoteRepository {
+  GoogleApiTaskListRemoteRepository(this.api);
 
   final g.TasksApi api;
 

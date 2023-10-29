@@ -6,8 +6,8 @@ abstract class TaskListsLocalRepository implements TaskListsRepository {
   Stream<List<TaskList>> watchTaskLists();
 }
 
-class IsarLocalRepository implements TaskListsLocalRepository {
-  IsarLocalRepository(this.isar);
+class IsarTaskListLocalRepository implements TaskListsLocalRepository {
+  IsarTaskListLocalRepository(this.isar);
 
   final Isar isar;
 

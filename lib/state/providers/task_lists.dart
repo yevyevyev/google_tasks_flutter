@@ -11,6 +11,9 @@ part 'task_lists.g.dart';
 
 @riverpod
 class TaskLists extends _$TaskLists with UndoMixin, PaginationMixin {
+  @override
+  FutureOr<List<TaskList>> build() => firstFetch();
+
   void addTaskList({required String title}) async {
     final taskList = TaskList(
       id: const Uuid().v4(),

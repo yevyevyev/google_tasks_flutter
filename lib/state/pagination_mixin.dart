@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:better_gtask/models/models.dart';
 import 'package:better_gtask/state/repository/repo.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-mixin PaginationMixin<T extends RemoteModel> on AutoDisposeAsyncNotifier<List<T>> {
+// ignore: invalid_use_of_internal_member
+mixin PaginationMixin<T extends RemoteModel> on BuildlessAutoDisposeAsyncNotifier<List<T>> {
   Paginated<T, String>? _pagination;
 
   Repository<T> get local;
   bool get hasReachedEndPage => _pagination?.offset == null;
 
-  @override
-  FutureOr<List<T>> build() async {
+  FutureOr<List<T>> firstFetch() async {
     if (_pagination == null) {
       final remoteList = fetch(null);
       remoteList.then(_updateLocalFromRemote);

@@ -6,7 +6,7 @@ part of 'task_remote.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$taskListRemoteHash() => r'bde7e7a5a4282d4fc06eb5ccb91587d915409da3';
+String _$taskListRemoteHash() => r'4894ce3a3724606a9ade8b6f65b8b62c30ffb4ca';
 
 /// See also [taskListRemote].
 @ProviderFor(taskListRemote)
@@ -23,8 +23,7 @@ final taskListRemoteProvider =
 
 typedef TaskListRemoteRef
     = AutoDisposeFutureProviderRef<TaskListsRemoteRepository>;
-String _$fetchRemoteTaskListsHash() =>
-    r'1f797bcf5d5c2f16183f8e3b4d551e62001f6d6b';
+String _$tasksRemoteHash() => r'17a0cc9fa3ce48e2859f3c1ae2060eb67564c32f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,6 +45,137 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [tasksRemote].
+@ProviderFor(tasksRemote)
+const tasksRemoteProvider = TasksRemoteFamily();
+
+/// See also [tasksRemote].
+class TasksRemoteFamily extends Family<AsyncValue<TaskRemoteRepository>> {
+  /// See also [tasksRemote].
+  const TasksRemoteFamily();
+
+  /// See also [tasksRemote].
+  TasksRemoteProvider call({
+    required String taskListId,
+  }) {
+    return TasksRemoteProvider(
+      taskListId: taskListId,
+    );
+  }
+
+  @override
+  TasksRemoteProvider getProviderOverride(
+    covariant TasksRemoteProvider provider,
+  ) {
+    return call(
+      taskListId: provider.taskListId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'tasksRemoteProvider';
+}
+
+/// See also [tasksRemote].
+class TasksRemoteProvider
+    extends AutoDisposeFutureProvider<TaskRemoteRepository> {
+  /// See also [tasksRemote].
+  TasksRemoteProvider({
+    required String taskListId,
+  }) : this._internal(
+          (ref) => tasksRemote(
+            ref as TasksRemoteRef,
+            taskListId: taskListId,
+          ),
+          from: tasksRemoteProvider,
+          name: r'tasksRemoteProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$tasksRemoteHash,
+          dependencies: TasksRemoteFamily._dependencies,
+          allTransitiveDependencies:
+              TasksRemoteFamily._allTransitiveDependencies,
+          taskListId: taskListId,
+        );
+
+  TasksRemoteProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.taskListId,
+  }) : super.internal();
+
+  final String taskListId;
+
+  @override
+  Override overrideWith(
+    FutureOr<TaskRemoteRepository> Function(TasksRemoteRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TasksRemoteProvider._internal(
+        (ref) => create(ref as TasksRemoteRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        taskListId: taskListId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<TaskRemoteRepository> createElement() {
+    return _TasksRemoteProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TasksRemoteProvider && other.taskListId == taskListId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, taskListId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin TasksRemoteRef on AutoDisposeFutureProviderRef<TaskRemoteRepository> {
+  /// The parameter `taskListId` of this provider.
+  String get taskListId;
+}
+
+class _TasksRemoteProviderElement
+    extends AutoDisposeFutureProviderElement<TaskRemoteRepository>
+    with TasksRemoteRef {
+  _TasksRemoteProviderElement(super.provider);
+
+  @override
+  String get taskListId => (origin as TasksRemoteProvider).taskListId;
+}
+
+String _$fetchRemoteTaskListsHash() =>
+    r'1f797bcf5d5c2f16183f8e3b4d551e62001f6d6b';
 
 /// See also [fetchRemoteTaskLists].
 @ProviderFor(fetchRemoteTaskLists)
@@ -178,6 +308,156 @@ class _FetchRemoteTaskListsProviderElement
 
   @override
   String? get offset => (origin as FetchRemoteTaskListsProvider).offset;
+}
+
+String _$fetchRemoteTasksHash() => r'8120f8bb2400386d98a5f54af3c68b88532d36e9';
+
+/// See also [fetchRemoteTasks].
+@ProviderFor(fetchRemoteTasks)
+const fetchRemoteTasksProvider = FetchRemoteTasksFamily();
+
+/// See also [fetchRemoteTasks].
+class FetchRemoteTasksFamily
+    extends Family<AsyncValue<Paginated<Task, String>>> {
+  /// See also [fetchRemoteTasks].
+  const FetchRemoteTasksFamily();
+
+  /// See also [fetchRemoteTasks].
+  FetchRemoteTasksProvider call({
+    required String taskListId,
+    String? offset,
+  }) {
+    return FetchRemoteTasksProvider(
+      taskListId: taskListId,
+      offset: offset,
+    );
+  }
+
+  @override
+  FetchRemoteTasksProvider getProviderOverride(
+    covariant FetchRemoteTasksProvider provider,
+  ) {
+    return call(
+      taskListId: provider.taskListId,
+      offset: provider.offset,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'fetchRemoteTasksProvider';
+}
+
+/// See also [fetchRemoteTasks].
+class FetchRemoteTasksProvider
+    extends AutoDisposeFutureProvider<Paginated<Task, String>> {
+  /// See also [fetchRemoteTasks].
+  FetchRemoteTasksProvider({
+    required String taskListId,
+    String? offset,
+  }) : this._internal(
+          (ref) => fetchRemoteTasks(
+            ref as FetchRemoteTasksRef,
+            taskListId: taskListId,
+            offset: offset,
+          ),
+          from: fetchRemoteTasksProvider,
+          name: r'fetchRemoteTasksProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$fetchRemoteTasksHash,
+          dependencies: FetchRemoteTasksFamily._dependencies,
+          allTransitiveDependencies:
+              FetchRemoteTasksFamily._allTransitiveDependencies,
+          taskListId: taskListId,
+          offset: offset,
+        );
+
+  FetchRemoteTasksProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.taskListId,
+    required this.offset,
+  }) : super.internal();
+
+  final String taskListId;
+  final String? offset;
+
+  @override
+  Override overrideWith(
+    FutureOr<Paginated<Task, String>> Function(FetchRemoteTasksRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FetchRemoteTasksProvider._internal(
+        (ref) => create(ref as FetchRemoteTasksRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        taskListId: taskListId,
+        offset: offset,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Paginated<Task, String>> createElement() {
+    return _FetchRemoteTasksProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FetchRemoteTasksProvider &&
+        other.taskListId == taskListId &&
+        other.offset == offset;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, taskListId.hashCode);
+    hash = _SystemHash.combine(hash, offset.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin FetchRemoteTasksRef
+    on AutoDisposeFutureProviderRef<Paginated<Task, String>> {
+  /// The parameter `taskListId` of this provider.
+  String get taskListId;
+
+  /// The parameter `offset` of this provider.
+  String? get offset;
+}
+
+class _FetchRemoteTasksProviderElement
+    extends AutoDisposeFutureProviderElement<Paginated<Task, String>>
+    with FetchRemoteTasksRef {
+  _FetchRemoteTasksProviderElement(super.provider);
+
+  @override
+  String get taskListId => (origin as FetchRemoteTasksProvider).taskListId;
+  @override
+  String? get offset => (origin as FetchRemoteTasksProvider).offset;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-mixin UndoMixin<T> on AutoDisposeAsyncNotifier<T> {
+// ignore: invalid_use_of_internal_member
+mixin UndoMixin<T> on BuildlessAutoDisposeAsyncNotifier<T> {
   AsyncValue<T>? _previous;
 
   @override

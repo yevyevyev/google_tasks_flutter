@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'tasks.dart';
+part of 'task.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,28 +15,36 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$Tasks {
+mixin _$Task {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String get taskListId => throw _privateConstructorUsedError;
   RemoteStatus get status => throw _privateConstructorUsedError;
+  RemoteAction get action => throw _privateConstructorUsedError;
   DateTime get updated => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TasksCopyWith<Tasks> get copyWith => throw _privateConstructorUsedError;
+  $TaskCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TasksCopyWith<$Res> {
-  factory $TasksCopyWith(Tasks value, $Res Function(Tasks) then) =
-      _$TasksCopyWithImpl<$Res, Tasks>;
+abstract class $TaskCopyWith<$Res> {
+  factory $TaskCopyWith(Task value, $Res Function(Task) then) =
+      _$TaskCopyWithImpl<$Res, Task>;
   @useResult
-  $Res call({String id, String title, RemoteStatus status, DateTime updated});
+  $Res call(
+      {String id,
+      String title,
+      String taskListId,
+      RemoteStatus status,
+      RemoteAction action,
+      DateTime updated});
 }
 
 /// @nodoc
-class _$TasksCopyWithImpl<$Res, $Val extends Tasks>
-    implements $TasksCopyWith<$Res> {
-  _$TasksCopyWithImpl(this._value, this._then);
+class _$TaskCopyWithImpl<$Res, $Val extends Task>
+    implements $TaskCopyWith<$Res> {
+  _$TaskCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -48,7 +56,9 @@ class _$TasksCopyWithImpl<$Res, $Val extends Tasks>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? taskListId = null,
     Object? status = null,
+    Object? action = null,
     Object? updated = null,
   }) {
     return _then(_value.copyWith(
@@ -60,10 +70,18 @@ class _$TasksCopyWithImpl<$Res, $Val extends Tasks>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      taskListId: null == taskListId
+          ? _value.taskListId
+          : taskListId // ignore: cast_nullable_to_non_nullable
+              as String,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as RemoteStatus,
+      action: null == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as RemoteAction,
       updated: null == updated
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
@@ -73,21 +91,26 @@ class _$TasksCopyWithImpl<$Res, $Val extends Tasks>
 }
 
 /// @nodoc
-abstract class _$$TasksImplCopyWith<$Res> implements $TasksCopyWith<$Res> {
-  factory _$$TasksImplCopyWith(
-          _$TasksImpl value, $Res Function(_$TasksImpl) then) =
-      __$$TasksImplCopyWithImpl<$Res>;
+abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
+  factory _$$TaskImplCopyWith(
+          _$TaskImpl value, $Res Function(_$TaskImpl) then) =
+      __$$TaskImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, RemoteStatus status, DateTime updated});
+  $Res call(
+      {String id,
+      String title,
+      String taskListId,
+      RemoteStatus status,
+      RemoteAction action,
+      DateTime updated});
 }
 
 /// @nodoc
-class __$$TasksImplCopyWithImpl<$Res>
-    extends _$TasksCopyWithImpl<$Res, _$TasksImpl>
-    implements _$$TasksImplCopyWith<$Res> {
-  __$$TasksImplCopyWithImpl(
-      _$TasksImpl _value, $Res Function(_$TasksImpl) _then)
+class __$$TaskImplCopyWithImpl<$Res>
+    extends _$TaskCopyWithImpl<$Res, _$TaskImpl>
+    implements _$$TaskImplCopyWith<$Res> {
+  __$$TaskImplCopyWithImpl(_$TaskImpl _value, $Res Function(_$TaskImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -95,10 +118,12 @@ class __$$TasksImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? taskListId = null,
     Object? status = null,
+    Object? action = null,
     Object? updated = null,
   }) {
-    return _then(_$TasksImpl(
+    return _then(_$TaskImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -107,10 +132,18 @@ class __$$TasksImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      taskListId: null == taskListId
+          ? _value.taskListId
+          : taskListId // ignore: cast_nullable_to_non_nullable
+              as String,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as RemoteStatus,
+      action: null == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as RemoteAction,
       updated: null == updated
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
@@ -121,11 +154,13 @@ class __$$TasksImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TasksImpl extends _Tasks {
-  _$TasksImpl(
+class _$TaskImpl extends _Task {
+  _$TaskImpl(
       {required this.id,
       required this.title,
-      required this.status,
+      required this.taskListId,
+      this.status = RemoteStatus.draft,
+      this.action = RemoteAction.none,
       required this.updated})
       : super._();
 
@@ -134,54 +169,70 @@ class _$TasksImpl extends _Tasks {
   @override
   final String title;
   @override
+  final String taskListId;
+  @override
+  @JsonKey()
   final RemoteStatus status;
+  @override
+  @JsonKey()
+  final RemoteAction action;
   @override
   final DateTime updated;
 
   @override
   String toString() {
-    return 'Tasks(id: $id, title: $title, status: $status, updated: $updated)';
+    return 'Task(id: $id, title: $title, taskListId: $taskListId, status: $status, action: $action, updated: $updated)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TasksImpl &&
+            other is _$TaskImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.taskListId, taskListId) ||
+                other.taskListId == taskListId) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.action, action) || other.action == action) &&
             (identical(other.updated, updated) || other.updated == updated));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, status, updated);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, taskListId, status, action, updated);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TasksImplCopyWith<_$TasksImpl> get copyWith =>
-      __$$TasksImplCopyWithImpl<_$TasksImpl>(this, _$identity);
+  _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>
+      __$$TaskImplCopyWithImpl<_$TaskImpl>(this, _$identity);
 }
 
-abstract class _Tasks extends Tasks {
-  factory _Tasks(
+abstract class _Task extends Task {
+  factory _Task(
       {required final String id,
       required final String title,
-      required final RemoteStatus status,
-      required final DateTime updated}) = _$TasksImpl;
-  _Tasks._() : super._();
+      required final String taskListId,
+      final RemoteStatus status,
+      final RemoteAction action,
+      required final DateTime updated}) = _$TaskImpl;
+  _Task._() : super._();
 
   @override
   String get id;
   @override
   String get title;
   @override
+  String get taskListId;
+  @override
   RemoteStatus get status;
+  @override
+  RemoteAction get action;
   @override
   DateTime get updated;
   @override
   @JsonKey(ignore: true)
-  _$$TasksImplCopyWith<_$TasksImpl> get copyWith =>
+  _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

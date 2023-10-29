@@ -1,27 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task_store.dart';
+part of 'tasks.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$taskListStoreHash() => r'8e497178929f2bb5a6e30d086efcd6a5c6144a55';
-
-/// See also [taskListStore].
-@ProviderFor(taskListStore)
-final taskListStoreProvider = AutoDisposeFutureProvider<TaskListStore>.internal(
-  taskListStore,
-  name: r'taskListStoreProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$taskListStoreHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef TaskListStoreRef = AutoDisposeFutureProviderRef<TaskListStore>;
-String _$taskStoreHash() => r'd4527022a4cd51efadf1124e59ff3f4f47217ab1';
+String _$tasksHash() => r'0e8fdc79788eb67d38fe2e79fb61abf4ac667aac';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,27 +29,35 @@ class _SystemHash {
   }
 }
 
-/// See also [taskStore].
-@ProviderFor(taskStore)
-const taskStoreProvider = TaskStoreFamily();
+abstract class _$Tasks extends BuildlessAutoDisposeAsyncNotifier<List<Task>> {
+  late final String taskListId;
 
-/// See also [taskStore].
-class TaskStoreFamily extends Family<AsyncValue<TaskStore>> {
-  /// See also [taskStore].
-  const TaskStoreFamily();
+  FutureOr<List<Task>> build({
+    required String taskListId,
+  });
+}
 
-  /// See also [taskStore].
-  TaskStoreProvider call({
+/// See also [Tasks].
+@ProviderFor(Tasks)
+const tasksProvider = TasksFamily();
+
+/// See also [Tasks].
+class TasksFamily extends Family<AsyncValue<List<Task>>> {
+  /// See also [Tasks].
+  const TasksFamily();
+
+  /// See also [Tasks].
+  TasksProvider call({
     required String taskListId,
   }) {
-    return TaskStoreProvider(
+    return TasksProvider(
       taskListId: taskListId,
     );
   }
 
   @override
-  TaskStoreProvider getProviderOverride(
-    covariant TaskStoreProvider provider,
+  TasksProvider getProviderOverride(
+    covariant TasksProvider provider,
   ) {
     return call(
       taskListId: provider.taskListId,
@@ -83,31 +76,29 @@ class TaskStoreFamily extends Family<AsyncValue<TaskStore>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'taskStoreProvider';
+  String? get name => r'tasksProvider';
 }
 
-/// See also [taskStore].
-class TaskStoreProvider extends AutoDisposeFutureProvider<TaskStore> {
-  /// See also [taskStore].
-  TaskStoreProvider({
+/// See also [Tasks].
+class TasksProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<Tasks, List<Task>> {
+  /// See also [Tasks].
+  TasksProvider({
     required String taskListId,
   }) : this._internal(
-          (ref) => taskStore(
-            ref as TaskStoreRef,
-            taskListId: taskListId,
-          ),
-          from: taskStoreProvider,
-          name: r'taskStoreProvider',
+          () => Tasks()..taskListId = taskListId,
+          from: tasksProvider,
+          name: r'tasksProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$taskStoreHash,
-          dependencies: TaskStoreFamily._dependencies,
-          allTransitiveDependencies: TaskStoreFamily._allTransitiveDependencies,
+                  : _$tasksHash,
+          dependencies: TasksFamily._dependencies,
+          allTransitiveDependencies: TasksFamily._allTransitiveDependencies,
           taskListId: taskListId,
         );
 
-  TaskStoreProvider._internal(
+  TasksProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -120,13 +111,20 @@ class TaskStoreProvider extends AutoDisposeFutureProvider<TaskStore> {
   final String taskListId;
 
   @override
-  Override overrideWith(
-    FutureOr<TaskStore> Function(TaskStoreRef provider) create,
+  FutureOr<List<Task>> runNotifierBuild(
+    covariant Tasks notifier,
   ) {
+    return notifier.build(
+      taskListId: taskListId,
+    );
+  }
+
+  @override
+  Override overrideWith(Tasks Function() create) {
     return ProviderOverride(
       origin: this,
-      override: TaskStoreProvider._internal(
-        (ref) => create(ref as TaskStoreRef),
+      override: TasksProvider._internal(
+        () => create()..taskListId = taskListId,
         from: from,
         name: null,
         dependencies: null,
@@ -138,13 +136,13 @@ class TaskStoreProvider extends AutoDisposeFutureProvider<TaskStore> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<TaskStore> createElement() {
-    return _TaskStoreProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<Tasks, List<Task>> createElement() {
+    return _TasksProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TaskStoreProvider && other.taskListId == taskListId;
+    return other is TasksProvider && other.taskListId == taskListId;
   }
 
   @override
@@ -156,17 +154,18 @@ class TaskStoreProvider extends AutoDisposeFutureProvider<TaskStore> {
   }
 }
 
-mixin TaskStoreRef on AutoDisposeFutureProviderRef<TaskStore> {
+mixin TasksRef on AutoDisposeAsyncNotifierProviderRef<List<Task>> {
   /// The parameter `taskListId` of this provider.
   String get taskListId;
 }
 
-class _TaskStoreProviderElement
-    extends AutoDisposeFutureProviderElement<TaskStore> with TaskStoreRef {
-  _TaskStoreProviderElement(super.provider);
+class _TasksProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<Tasks, List<Task>>
+    with TasksRef {
+  _TasksProviderElement(super.provider);
 
   @override
-  String get taskListId => (origin as TaskStoreProvider).taskListId;
+  String get taskListId => (origin as TasksProvider).taskListId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

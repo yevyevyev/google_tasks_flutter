@@ -16,7 +16,7 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
 
   final isar = Isar.open(
-    schemas: [TaskListSchema, TasksSchema],
+    schemas: [TaskListSchema, TaskSchema],
     directory: dir.path,
   );
 
