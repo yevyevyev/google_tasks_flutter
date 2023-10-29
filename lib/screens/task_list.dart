@@ -1,5 +1,6 @@
 import 'package:better_gtask/models/models.dart';
 import 'package:better_gtask/widgets/text_field_dialog.dart';
+import 'package:better_gtask/widgets/widgets.dart';
 import 'package:very_good_infinite_list/very_good_infinite_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -74,8 +75,13 @@ class TaskListTile extends ConsumerWidget {
     );
   }
 
-  void onDeleteRequested(WidgetRef ref) {
-    ref.read(taskListsProvider.notifier).deleteTaskList(taskList);
+  void onDeleteRequested(WidgetRef ref) async {
+    final scaffold = ScaffoldMessenger.of(ref.context);
+    final undoToken = await ref.read(taskListsProvider.notifier).deleteTaskList(taskList);
+    scaffold.showSnackBar(UndoSnackBar(
+      undoToken: undoToken,
+      title: 'Task List Deleted',
+    ));
   }
 
   void onTaskListTap(WidgetRef ref) {

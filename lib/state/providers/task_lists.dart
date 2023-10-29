@@ -1,4 +1,5 @@
 import 'package:better_gtask/state/providers/providers.dart';
+import 'package:better_gtask/state/undo_mixin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:googleapis/tasks/v1.dart' as g;
 import 'package:better_gtask/models/models.dart';
@@ -7,7 +8,7 @@ import 'package:uuid/uuid.dart';
 part 'task_lists.g.dart';
 
 @riverpod
-class TaskLists extends _$TaskLists {
+class TaskLists extends _$TaskLists with UndoMixin {
   g.TaskLists? _taskLists;
 
   bool get hasReachedEndPage => _taskLists?.nextPageToken == null;
@@ -79,17 +80,26 @@ class TaskLists extends _$TaskLists {
     );
   }
 
-  void deleteTaskList(TaskList taskList) async {
+  Future<UndoToken> deleteTaskList(TaskList taskList) async {
     final taskApi = await ref.read(taskApiProvider.future);
     final isar = ref.read(isarProvider);
     final previous = await future;
-    state = AsyncValue.data(previous..removeWhere((element) => element.id == taskList.id));
-    assert(isar.write((isar) => isar.taskLists.delete(taskList.id)));
-    final result = await AsyncValue.guard(() => taskApi.tasklists.delete(taskList.id));
-    result.when(
-      data: (_) => _,
-      error: (err, stackTrace) => isar.write((isar) => isar.taskLists.put(taskList)),
-      loading: () => throw UnimplementedError(),
+    final newState = List<TaskList>.from(previous);
+    newState.removeWhere((element) => element.id == taskList.id);
+    state = AsyncValue.data(newState);
+
+    return UndoToken(
+      this,
+      duration: const Duration(seconds: 3),
+      action: () async {
+        assert(isar.write((isar) => isar.taskLists.delete(taskList.id)));
+        final result = await AsyncValue.guard(() => taskApi.tasklists.delete(taskList.id));
+        result.when(
+          data: (_) => _,
+          error: (err, stackTrace) => isar.write((isar) => isar.taskLists.put(taskList)),
+          loading: () => throw UnimplementedError(),
+        );
+      },
     );
   }
 }
