@@ -32,7 +32,11 @@ class TaskList with _$TaskList implements RemoteModel {
 
   TaskList._();
 
-  g.TaskList toDto() => g.TaskList(id: id, title: title);
+  g.TaskList toDto() => g.TaskList(
+        id: id,
+        title: title,
+        updated: updated.toIso8601String(),
+      );
 
   static TaskList fromDto(
     g.TaskList taskList, [

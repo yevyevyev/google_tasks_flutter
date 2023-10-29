@@ -22,6 +22,11 @@ mixin _$Task {
   RemoteStatus get status => throw _privateConstructorUsedError;
   RemoteAction get action => throw _privateConstructorUsedError;
   DateTime get updated => throw _privateConstructorUsedError;
+  DateTime? get completed => throw _privateConstructorUsedError;
+  DateTime? get due => throw _privateConstructorUsedError;
+  String? get position => throw _privateConstructorUsedError;
+  String? get parentTaskId => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TaskCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
@@ -38,7 +43,12 @@ abstract class $TaskCopyWith<$Res> {
       String taskListId,
       RemoteStatus status,
       RemoteAction action,
-      DateTime updated});
+      DateTime updated,
+      DateTime? completed,
+      DateTime? due,
+      String? position,
+      String? parentTaskId,
+      String? notes});
 }
 
 /// @nodoc
@@ -60,6 +70,11 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? status = null,
     Object? action = null,
     Object? updated = null,
+    Object? completed = freezed,
+    Object? due = freezed,
+    Object? position = freezed,
+    Object? parentTaskId = freezed,
+    Object? notes = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -86,6 +101,26 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      completed: freezed == completed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      due: freezed == due
+          ? _value.due
+          : due // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      position: freezed == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as String?,
+      parentTaskId: freezed == parentTaskId
+          ? _value.parentTaskId
+          : parentTaskId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      notes: freezed == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -103,7 +138,12 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       String taskListId,
       RemoteStatus status,
       RemoteAction action,
-      DateTime updated});
+      DateTime updated,
+      DateTime? completed,
+      DateTime? due,
+      String? position,
+      String? parentTaskId,
+      String? notes});
 }
 
 /// @nodoc
@@ -122,6 +162,11 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? status = null,
     Object? action = null,
     Object? updated = null,
+    Object? completed = freezed,
+    Object? due = freezed,
+    Object? position = freezed,
+    Object? parentTaskId = freezed,
+    Object? notes = freezed,
   }) {
     return _then(_$TaskImpl(
       id: null == id
@@ -148,6 +193,26 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      completed: freezed == completed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      due: freezed == due
+          ? _value.due
+          : due // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      position: freezed == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as String?,
+      parentTaskId: freezed == parentTaskId
+          ? _value.parentTaskId
+          : parentTaskId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      notes: freezed == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -161,7 +226,12 @@ class _$TaskImpl extends _Task {
       required this.taskListId,
       this.status = RemoteStatus.draft,
       this.action = RemoteAction.none,
-      required this.updated})
+      required this.updated,
+      this.completed,
+      this.due,
+      this.position,
+      this.parentTaskId,
+      this.notes})
       : super._();
 
   @override
@@ -178,10 +248,20 @@ class _$TaskImpl extends _Task {
   final RemoteAction action;
   @override
   final DateTime updated;
+  @override
+  final DateTime? completed;
+  @override
+  final DateTime? due;
+  @override
+  final String? position;
+  @override
+  final String? parentTaskId;
+  @override
+  final String? notes;
 
   @override
   String toString() {
-    return 'Task(id: $id, title: $title, taskListId: $taskListId, status: $status, action: $action, updated: $updated)';
+    return 'Task(id: $id, title: $title, taskListId: $taskListId, status: $status, action: $action, updated: $updated, completed: $completed, due: $due, position: $position, parentTaskId: $parentTaskId, notes: $notes)';
   }
 
   @override
@@ -195,12 +275,20 @@ class _$TaskImpl extends _Task {
                 other.taskListId == taskListId) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.action, action) || other.action == action) &&
-            (identical(other.updated, updated) || other.updated == updated));
+            (identical(other.updated, updated) || other.updated == updated) &&
+            (identical(other.completed, completed) ||
+                other.completed == completed) &&
+            (identical(other.due, due) || other.due == due) &&
+            (identical(other.position, position) ||
+                other.position == position) &&
+            (identical(other.parentTaskId, parentTaskId) ||
+                other.parentTaskId == parentTaskId) &&
+            (identical(other.notes, notes) || other.notes == notes));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, taskListId, status, action, updated);
+  int get hashCode => Object.hash(runtimeType, id, title, taskListId, status,
+      action, updated, completed, due, position, parentTaskId, notes);
 
   @JsonKey(ignore: true)
   @override
@@ -216,7 +304,12 @@ abstract class _Task extends Task {
       required final String taskListId,
       final RemoteStatus status,
       final RemoteAction action,
-      required final DateTime updated}) = _$TaskImpl;
+      required final DateTime updated,
+      final DateTime? completed,
+      final DateTime? due,
+      final String? position,
+      final String? parentTaskId,
+      final String? notes}) = _$TaskImpl;
   _Task._() : super._();
 
   @override
@@ -231,6 +324,16 @@ abstract class _Task extends Task {
   RemoteAction get action;
   @override
   DateTime get updated;
+  @override
+  DateTime? get completed;
+  @override
+  DateTime? get due;
+  @override
+  String? get position;
+  @override
+  String? get parentTaskId;
+  @override
+  String? get notes;
   @override
   @JsonKey(ignore: true)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>

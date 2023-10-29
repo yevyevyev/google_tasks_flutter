@@ -17,6 +17,11 @@ class Task with _$Task implements RemoteModel {
     @Default(RemoteStatus.draft) RemoteStatus status,
     @Default(RemoteAction.none) RemoteAction action,
     required DateTime updated,
+    DateTime? completed,
+    DateTime? due,
+    String? position,
+    String? parentTaskId,
+    String? notes,
   }) = _Task;
 
   @override
@@ -33,7 +38,16 @@ class Task with _$Task implements RemoteModel {
 
   Task._();
 
-  g.Task toDto() => g.Task(id: id, title: title);
+  g.Task toDto() => g.Task(
+        id: id,
+        title: title,
+        updated: updated.toIso8601String(),
+        completed: completed?.toIso8601String(),
+        due: due?.toIso8601String(),
+        position: position,
+        parent: parentTaskId,
+        notes: notes,
+      );
 
   static Task fromDto(
     String taskListId,
@@ -48,6 +62,11 @@ class Task with _$Task implements RemoteModel {
         updated: DateTime.parse(task.updated!),
         status: status ?? RemoteStatus.done,
         action: action ?? RemoteAction.none,
+        completed: task.completed != null ? DateTime.parse(task.completed!) : null,
+        due: task.due != null ? DateTime.parse(task.due!) : null,
+        position: task.position,
+        parentTaskId: task.parent,
+        notes: task.notes,
       );
 
   @override

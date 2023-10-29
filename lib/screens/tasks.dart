@@ -73,6 +73,10 @@ class TaskTile extends ConsumerWidget {
         title: Text(task.title),
         subtitle: task.status == RemoteStatus.pending ? const LinearProgressIndicator() : null,
         trailing: task.status == RemoteStatus.draft ? const Icon(Icons.warning_rounded) : null,
+        leading: Checkbox(
+          value: task.completed != null,
+          onChanged: (_) => onCheckboxChanged(ref),
+        ),
       ),
     );
   }
@@ -88,5 +92,19 @@ class TaskTile extends ConsumerWidget {
 
   void onTaskListTap(WidgetRef ref) {
     // TasksRoute(taskListId: taskList.id).go(ref.context);
+  }
+
+  void onCheckboxChanged(WidgetRef ref) async {
+    final scaffold = ScaffoldMessenger.of(ref.context);
+    final tasks = ref.read(tasksProvider(taskListId: task.taskListId).notifier);
+    final undoToken = await tasks.completeTask(task);
+    if (undoToken == null) {
+      return;
+    }
+
+    scaffold.showSnackBar(UndoSnackBar(
+      undoToken: undoToken,
+      title: 'Task Completed',
+    ));
   }
 }

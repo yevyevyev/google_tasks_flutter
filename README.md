@@ -15,6 +15,7 @@ Google Tasks on Flutter
 - Optimistic data updates
   - First fetch fetched in parallel from local storage and remote storage
   - Adding new data adds it immediately into local storage with pending status and submits to remote storage. If fails, marks it to draft.
+  - Next time device is online, submits all the drafts to remote storage
   - Observing internet connectivity status and reacting to it
 - Pull to refresh
 - Undo
